@@ -4,20 +4,16 @@ import lkwoung.movie.entity.member.Member;
 import lkwoung.movie.entity.member.MemberRepository;
 import lkwoung.movie.request.memberReqeust.UpdateRequest;
 import org.assertj.core.api.Assertions;
-import org.junit.After;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.graphql.tester.AutoConfigureGraphQlTester;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,24 +27,77 @@ class MemberServiceTest {
 
     Member member;
     String id = "testId";
+    boolean skipTearDown = false;
 
     @BeforeEach
-    public void tearUp() {
+    public void setUp() {
+        skipTearDown = false;
+
         member = Member.builder()
-                .id(id)
-                .password("123456")
-                .phoneNumber("010-0000-0000")
-                .authority("member")
-                .state("active")
-                .notion("hello world")
-                .registerDate("2023-03-05 20:49:00")
-                .logDate("2023-03-05 20:49:00")
+                .memberId(id)
+                .memberPassword("123456")
+                .memberPhoneNumber("010-0000-0000")
+                .memberAuthority("member")
+                .memberState("active")
+                .memberNotion("hello world")
+                .memberRegisterDate("2023-03-05 20:49:00")
+                .memberLogDate("2023-03-05 20:49:00")
                 .build();
     }
 
     @AfterEach
     public void tearDown(){
-        memberRepository.deleteById("testId");
+        if(!skipTearDown){
+            memberRepository.deleteById("testId");
+        }
+    }
+    
+    @Test
+    @DisplayName("")
+    public void MemberSave() {
+        // given
+        memberRepository.save(member);
+        
+        // when
+        Optional<Member> getMember = memberRepository.findAllByMemberIdAndMemberState(member.getMemberId(), "active");
+        Member findMember = getMember.get();
+
+        // then
+        Assertions.assertThat(member.getMemberId()).isEqualTo(findMember.getMemberId());
+    }
+    
+    @Test
+    @DisplayName("")
+    public void MemberList() {
+        // given
+        Integer beforeSize = memberRepository.countAllBy();
+        memberRepository.save(member);
+
+        // when
+        JSONObject jsonObject = memberService.userList();
+        JSONObject data = (JSONObject) jsonObject.get("data");
+        JSONArray row = (JSONArray)data.get("row");
+        int afterSize = row.size();
+
+        // then
+        Assertions.assertThat(beforeSize+1).isEqualTo(afterSize);
+    }
+
+    @Test
+    @DisplayName("")
+    public void MemberSearch() {
+        // given
+        memberRepository.save(member);
+
+        // when
+        JSONObject jsonObject = memberService.userSearch(id);
+        System.out.println("jsonObject = " + jsonObject);
+
+        JSONObject data = (JSONObject) jsonObject.get("data");
+        String memberId = (String) data.get("memberId");
+
+        // then
+        Assertions.assertThat(member.getMemberId()).isEqualTo(memberId);
     }
 
     @Test
@@ -69,8 +118,25 @@ class MemberServiceTest {
         memberService.userUpdate(id, updateRequest);
 
         // then
-        Optional<Member> savedMember = memberRepository.findAllByIdAndState(id, "active");
-        Assertions.assertThat(savedMember.get().getPhoneNumber()).isEqualTo(phoneNumber);
-        Assertions.assertThat(savedMember.get().getNotion()).isEqualTo(notion);
+        Optional<Member> savedMember = memberRepository.findAllByMemberIdAndMemberState(id, "active");
+        Assertions.assertThat(savedMember.get().getMemberPhoneNumber()).isEqualTo(phoneNumber);
+        Assertions.assertThat(savedMember.get().getMemberNotion()).isEqualTo(notion);
+    }
+
+    @Test
+    @DisplayName("")
+    public void MemberDelete() {
+
+        skipTearDown = true;
+
+        // given
+        memberRepository.save(member);
+
+        // when
+        memberService.userDelete(member.getMemberId());
+        Optional<Member> findMember = memberRepository.findAllByMemberIdAndMemberState(member.getMemberId(), "active");
+
+        // then
+        Assertions.assertThatThrownBy(() -> findMember.get()).isInstanceOf(NoSuchElementException.class);
     }
 }

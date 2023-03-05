@@ -7,8 +7,9 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, String> {
 
-    Optional<Member> findAllByIdAndState(String id, String state);
+    Optional<Member> findAllByMemberIdAndMemberState(String id, String state);
 
-    List<Member> findAllByStateOrderById(String state);
+    List<Member> findAllByMemberStateOrderByMemberId(String state);
 
+    Integer countAllBy();
 }

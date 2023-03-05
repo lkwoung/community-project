@@ -18,49 +18,48 @@ import javax.persistence.Table;
 public class Member {
 
     @Id
-    private String id;
+    @Column(name = "member_id")
+    private String memberId;
 
-    @Column
-    private String password;
+    @Column(name = "member_password")
+    private String memberPassword;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    @Column(name = "member_phone_number")
+    private String memberPhoneNumber;
 
-    @Column
-    private String authority;
+    @Column(name = "member_authority")
+    private String memberAuthority;
 
-    @Column
-    private String state;
+    @Column(name = "member_state")
+    private String memberState;
 
-    @Column
-    private String notion;
+    @Column(name = "member_notion")
+    private String memberNotion;
 
-    @Column(name = "register_date")
-    private String registerDate;
+    @Column(name = "member_register_date")
+    private String memberRegisterDate;
 
-    @Column(name = "log_date")
-    private String logDate;
+    @Column(name = "member_log_date")
+    private String memberLogDate;
 
     @Builder
-    public Member(String id, String password, String phoneNumber, String authority,
-                  String state, String notion, String registerDate, String logDate) {
-        this.id = id;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.authority = authority;
-        this.state = state;
-        this.notion = notion;
-        this.registerDate = registerDate;
-        this.logDate = logDate;
+    public Member(String memberId, String memberPassword, String memberPhoneNumber, String memberAuthority,
+                  String memberState, String memberNotion, String memberRegisterDate, String memberLogDate) {
+        this.memberId = memberId;
+        this.memberPassword = memberPassword;
+        this.memberPhoneNumber = memberPhoneNumber;
+        this.memberAuthority = memberAuthority;
+        this.memberState = memberState;
+        this.memberNotion = memberNotion;
+        this.memberRegisterDate = memberRegisterDate;
+        this.memberLogDate = memberLogDate;
     }
 
     public void changePhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.memberPhoneNumber = phoneNumber;
     }
 
     public void changeNotion(String notion) {
-        this.notion = notion;
+        this.memberNotion = notion;
     }
-
-
 }

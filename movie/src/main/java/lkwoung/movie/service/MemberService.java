@@ -26,12 +26,13 @@ public class MemberService {
     private final ReturnService returnService;
     private final DateUtils dateUtils;
 
+    // 비밀번호 해시코드로 변환
     @Transactional
     public JSONObject userSignUp(SignUpRequest request) {
         try {
             log.info("MemberService.userSignUp");
 
-            Optional<Member> lv_existMember = memberRepository.findAllByIdAndState(request.getId(), "active");
+            Optional<Member> lv_existMember = memberRepository.findAllByMemberIdAndMemberState(request.getId(), "active");
             if (lv_existMember.isPresent()) {
                 return returnService.createResponse(DUPLICATE_IDENTITY, "사용중인 아이디입니다.", null);
             }
@@ -39,14 +40,14 @@ public class MemberService {
             String lv_now = dateUtils.getNow();
             memberRepository.save(
                     Member.builder()
-                            .id(request.getId())
-                            .password(request.getPassword())
-                            .phoneNumber(request.getPhoneNumber())
-                            .notion(request.getNotion())
-                            .authority("member")
-                            .state("active")
-                            .registerDate(lv_now)
-                            .logDate(lv_now)
+                            .memberId(request.getId())
+                            .memberPassword(request.getPassword())
+                            .memberPhoneNumber(request.getPhoneNumber())
+                            .memberNotion(request.getNotion())
+                            .memberAuthority("member")
+                            .memberState("active")
+                            .memberRegisterDate(lv_now)
+                            .memberLogDate(lv_now)
                             .build()
             );
 
@@ -65,16 +66,16 @@ public class MemberService {
         try {
             log.info("MemberService.userList");
 
-            List<Member> lv_membersList = memberRepository.findAllByStateOrderById("active");
+            List<Member> lv_membersList = memberRepository.findAllByMemberStateOrderByMemberId("active");
 
             JSONObject lv_response = new JSONObject();
             JSONArray lv_membersJsonArray = new JSONArray();
             for (Member member : lv_membersList) {
                 JSONObject lv_memberJsonObject = new JSONObject();
-                lv_memberJsonObject.put("id", member.getId());
-                lv_memberJsonObject.put("phoneNumber", member.getPhoneNumber());
-                lv_memberJsonObject.put("logDate", member.getLogDate());
-                lv_memberJsonObject.put("registerDate", member.getRegisterDate());
+                lv_memberJsonObject.put("memberId", member.getMemberId());
+                lv_memberJsonObject.put("memberPhoneNumber", member.getMemberPhoneNumber());
+                lv_memberJsonObject.put("memberLogDate", member.getMemberLogDate());
+                lv_memberJsonObject.put("memberRegisterDate", member.getMemberRegisterDate());
 
                 lv_membersJsonArray.add(lv_memberJsonObject);
             }
@@ -89,20 +90,21 @@ public class MemberService {
         }
     }
 
+    // querydsl 사용
     public JSONObject userSearch(String keyword) {
         try {
             log.info("MemberService.userSearch");
 
-            Optional<Member> lv_findMember = memberRepository.findAllByIdAndState(keyword, "active");
+            Optional<Member> lv_findMember = memberRepository.findAllByMemberIdAndMemberState(keyword, "active");
             if (lv_findMember.isEmpty()) {
                 return returnService.createResponse(NO_VALUE, "no value", null);
             }
 
             JSONObject lv_response = new JSONObject();
-            lv_response.put("id", lv_findMember.get().getId());
-            lv_response.put("phoneNumber", lv_findMember.get().getPhoneNumber());
-            lv_response.put("logDate", lv_findMember.get().getLogDate());
-            lv_response.put("registerDate", lv_findMember.get().getRegisterDate());
+            lv_response.put("memberId", lv_findMember.get().getMemberId());
+            lv_response.put("memberPhoneNumber", lv_findMember.get().getMemberPhoneNumber());
+            lv_response.put("memberLogDate", lv_findMember.get().getMemberLogDate());
+            lv_response.put("memberRegisterDate", lv_findMember.get().getMemberRegisterDate());
 
             return returnService.createResponse(SUCCESS, "success", lv_response);
         } catch (Exception e) {
@@ -118,7 +120,7 @@ public class MemberService {
         try {
             log.info("MemberService.userUpdate");
 
-            Optional<Member> lv_findMember = memberRepository.findAllByIdAndState(id, "active");
+            Optional<Member> lv_findMember = memberRepository.findAllByMemberIdAndMemberState(id, "active");
             if (lv_findMember.isEmpty()) {
                 return returnService.createResponse(NO_VALUE, "no value", null);
             }
@@ -142,7 +144,7 @@ public class MemberService {
         try {
             log.info("MemberService.userDelete");
 
-            Optional<Member> lv_findMember = memberRepository.findAllByIdAndState(id, "active");
+            Optional<Member> lv_findMember = memberRepository.findAllByMemberIdAndMemberState(id, "active");
             if (lv_findMember.isEmpty()) {
                 return returnService.createResponse(NO_VALUE, "no value", null);
             }
