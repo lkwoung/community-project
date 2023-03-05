@@ -110,11 +110,7 @@ class MemberServiceTest {
         String phoneNumber = "010-1111-1111";
         String notion = "go hell";
 
-        UpdateRequest updateRequest = UpdateRequest.builder()
-                .phoneNumber(phoneNumber)
-                .notion(notion)
-                .build();
-
+        UpdateRequest updateRequest = new UpdateRequest(phoneNumber, notion);
         memberService.userUpdate(id, updateRequest);
 
         // then

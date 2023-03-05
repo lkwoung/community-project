@@ -32,7 +32,7 @@ public class MemberService {
         try {
             log.info("MemberService.userSignUp");
 
-            Optional<Member> lv_existMember = memberRepository.findAllByMemberIdAndMemberState(request.getId(), "active");
+            Optional<Member> lv_existMember = memberRepository.findAllByMemberIdAndMemberState(request.getMemberId(), "active");
             if (lv_existMember.isPresent()) {
                 return returnService.createResponse(DUPLICATE_IDENTITY, "사용중인 아이디입니다.", null);
             }
@@ -40,10 +40,10 @@ public class MemberService {
             String lv_now = dateUtils.getNow();
             memberRepository.save(
                     Member.builder()
-                            .memberId(request.getId())
-                            .memberPassword(request.getPassword())
-                            .memberPhoneNumber(request.getPhoneNumber())
-                            .memberNotion(request.getNotion())
+                            .memberId(request.getMemberId())
+                            .memberPassword(request.getMemberPassword())
+                            .memberPhoneNumber(request.getMemberPhoneNumber())
+                            .memberNotion(request.getMemberNotion())
                             .memberAuthority("member")
                             .memberState("active")
                             .memberRegisterDate(lv_now)
@@ -126,8 +126,8 @@ public class MemberService {
             }
 
             Member lv_member = lv_findMember.get();
-            lv_member.changePhoneNumber(request.getPhoneNumber());
-            lv_member.changeNotion(request.getNotion());
+            lv_member.changePhoneNumber(request.getMemberPhoneNumber());
+            lv_member.changeNotion(request.getMemberNotion());
 
             Thread.sleep(1000);
             return returnService.createResponse(SUCCESS, "success", null);

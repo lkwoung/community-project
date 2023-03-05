@@ -1,7 +1,7 @@
 package lkwoung.movie.request.memberReqeust;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;
@@ -9,16 +9,18 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 public class UpdateRequest {
 
-    @JsonProperty("phoneNumber")
+    @JsonProperty("memberPhoneNumber")
     @NotEmpty(message = "전화번호를 입력해주세요.")
-    private String phoneNumber;
+    private String memberPhoneNumber;
 
-    @JsonProperty("notion")
-    private String notion;
+    @JsonProperty("memberNotion")
+    private String memberNotion;
 
-    @Builder
-    public UpdateRequest(String phoneNumber, String notion) {
-        this.phoneNumber = phoneNumber;
-        this.notion = notion;
+    @JsonCreator
+    public UpdateRequest(@JsonProperty("memberPhoneNumber") String memberPhoneNumber,
+                         @JsonProperty("memberNotion") String memberNotion) {
+        this.memberPhoneNumber = memberPhoneNumber;
+        this.memberNotion = memberNotion;
     }
+
 }
