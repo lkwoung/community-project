@@ -1,11 +1,11 @@
 CREATE TABLE `member` (
-  `id` varchar(64) NOT NULL COMMENT 'id. 아이디',
-  `password` varchar(256) NOT NULL COMMENT 'password. 패스워드',
-  `phone_number` varchar(32) DEFAULT NULL COMMENT 'phone_number. 전화번호',
-  `notion` longtext NOT NULL COMMENT 'notion. 비고',
-  `register_date` timestamp DEFAULT NULL COMMENT 'register_date. 가입날짜',
-  `log_date` timestamp DEFAULT NULL COMMENT 'log_date. 최근 접속 날짜',
-  `state` varchar(8) NOT NULL COMMENT 'state. 상태',
-  `authority` varchar(32) NOT NULL COMMENT 'authority. 권한',
-  PRIMARY KEY (`id`)
+  `member_id` varchar(64) NOT NULL COMMENT 'id. 아이디',
+  `member_password` varchar(256) NOT NULL COMMENT 'password. 패스워드',
+  `member_phone_number` varchar(32) DEFAULT NULL COMMENT 'phone_number. 전화번호',
+  `member_notion` longtext NOT NULL COMMENT 'notion. 비고',
+  `member_register_date` timestamp NULL DEFAULT NULL COMMENT 'register_date. 가입날짜',
+  `member_log_date` timestamp NULL DEFAULT NULL COMMENT 'log_date. 최근 접속 날짜',
+  `member_state` varchar(8) NOT NULL COMMENT 'state. 상태',
+  `member_authority` varchar(32) NOT NULL COMMENT 'authority. 권한',
+  PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='member. 멤버'

@@ -1,0 +1,14 @@
+CREATE TABLE `movie` (
+  `movie_id` int NOT NULL AUTO_INCREMENT COMMENT 'movie_id. 영화 식별키',
+  `movie_name` longtext NOT NULL COMMENT 'movie_name. 영화 이름',
+  `movie_info` longtext COMMENT 'movie_info. 영화 정보',
+  `movie_director` varchar(64) DEFAULT NULL COMMENT 'movie_director. 영화 감독',
+  `movie_main_actor` longtext COMMENT 'movie_main_actor. 주연',
+  `movie_sub_actor` longtext COMMENT 'movie_sub_actor. 조연',
+  `movie_images` varchar(256) DEFAULT NULL COMMENT 'movie_images. 이미지',
+  `movie_poster` varchar(32) DEFAULT NULL COMMENT 'movie_poster. 포스터',
+  `movie_grade` float DEFAULT '0' COMMENT 'movie_grade. 영화 평점',
+  `movie_register_date` timestamp NULL DEFAULT NULL,
+  `movie_state` varchar(8) DEFAULT NULL,
+  PRIMARY KEY (`movie_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='movie. 영화'

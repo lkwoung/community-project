@@ -47,13 +47,13 @@ public class MemberController {
     }
 
     @Operation(summary = "회원수정", description = "update")
-    @PatchMapping("/{id}")
-    public JSONObject update(@PathVariable String id, @RequestBody @Valid UpdateRequest request, BindingResult result){
+    @PatchMapping("/{memberId}")
+    public JSONObject update(@PathVariable String memberId, @RequestBody @Valid UpdateRequest request, BindingResult result){
         if (result.hasErrors()) {
             return gv_returnService.createResponse(EnumCode.VALID_ERROR,
                     result.getAllErrors().get(0).getDefaultMessage(), null);
         }
-        return gv_memberService.userUpdate(id, request);
+        return gv_memberService.userUpdate(memberId, request);
     }
 
     @Operation(summary = "회원삭제", description = "delete")
