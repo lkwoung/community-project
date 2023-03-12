@@ -17,7 +17,7 @@ import java.util.Set;
 @EnableWebMvc
 public class SwaggerConfig {
 
-    //접속 주소:http://localhost:8080/swagger-ui/index.html
+    // http://localhost:8080/swagger-ui/index.html
 
     private ApiInfo swaggerApiInfo() {
         return new ApiInfoBuilder()

@@ -16,7 +16,7 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/api/movies")
 @Api(tags = "영화 API")
 public class MovieController {
 
