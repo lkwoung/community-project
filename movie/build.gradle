@@ -25,6 +25,12 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// JWT Token
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
 	// Json Simple
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
