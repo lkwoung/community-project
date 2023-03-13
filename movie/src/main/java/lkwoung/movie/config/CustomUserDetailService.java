@@ -31,7 +31,7 @@ public class CustomUserDetailService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String id){
         try {
-            log.info("loaduserByUsername : " + id);
+            log.info("loadUserByUsername : " + id);
             Optional<Member> lv_user = gv_memberRepository.findAllByMemberIdAndMemberState(id, "active");
 
             if (lv_user.isPresent()) {
